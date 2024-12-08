@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 public class CincuentazoApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/cincuentazo/hello-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/io/github/jeangiraldoo/cincuentazo/hello-view.fxml"));
         Scene scene = new Scene(loader.load());
         primaryStage.setScene(scene);
         primaryStage.setTitle("Cincuentazo");
