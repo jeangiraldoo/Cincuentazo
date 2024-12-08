@@ -35,6 +35,7 @@ public class GameController {
 
     private CardDeck mazo;
     private Mesa mesa;
+    private int difficulty;
     private List<Player> jugadores;
     private int turnoActual;
 
@@ -44,6 +45,7 @@ public class GameController {
 
     private void iniciarJuego() {
         // Inicializar el mazo
+        System.out.println(difficulty);
         mazo = new CardDeck();
 
         // Seleccionar la carta inicial para la mesa
@@ -198,5 +200,9 @@ public class GameController {
         machineOne.getChildren().clear();
         machineTwo.getChildren().clear();
         machineThree.getChildren().clear();
+    }
+
+    public void setDifficulty(Integer difficulty){
+        this.difficulty = difficulty;
     }
 }

@@ -2,6 +2,7 @@ module io.github.jeangiraldoo.cincuentazo {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
+    requires jdk.security.jgss;
 
     opens io.github.jeangiraldoo.cincuentazo.Model to javafx.graphics;
     opens io.github.jeangiraldoo.cincuentazo.Controller to javafx.fxml;
