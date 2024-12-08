@@ -1,32 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<VBox fx:id="rootNode" alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.jeangiraldoo.cincuentazo.HelloController">
-  <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-  </padding>
-
-  <Label fx:id="gameTittle" alignment="CENTER" text="Cincuentazo" textAlignment="CENTER" textFill="#87CEEB">
-    <padding>
-      <Insets bottom="50" />
-    </padding>
-    <font>
-      <Font size="69.0" />
-    </font>
-  </Label>
-  <HBox alignment="CENTER" spacing="20">
-    <Button  styleClass="menuPrincipalButton" text="Play">
-      <font>
-        <Font size="24.0" />
-      </font></Button>
-    <Button styleClass="menuPrincipalButton" text="Information">
-      <font>
-        <Font size="24.0" />
-      </font></Button>
-  </HBox>
-
-</VBox>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="681.0" style="-fx-background-color: #2E8B57;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.jeangiraldoo.cincuentazo.Controller.GameController">
+   <children>
+      <HBox fx:id="humanHbox" layoutX="241.0" layoutY="378.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #2E8B57;" />
+      <HBox fx:id="machineOne" layoutX="241.0" layoutY="46.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #2E8B57;" />
+      <HBox fx:id="machineThree" layoutX="14.0" layoutY="214.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #2E8B57;" />
+      <HBox fx:id="machineTwo" layoutX="465.0" layoutY="214.0" prefHeight="100.0" prefWidth="202.0" style="-fx-background-color: #2E8B57;" />
+      <HBox fx:id="mainDeck" layoutX="241.0" layoutY="214.0" prefHeight="100.0" prefWidth="200.0" />
+      <Label fx:id="gameState" layoutX="241.0" layoutY="314.0" text="Label" textFill="WHITE">
+         <font>
+            <Font name="Impact" size="18.0" />
+         </font></Label>
+   </children>
+</Pane>
