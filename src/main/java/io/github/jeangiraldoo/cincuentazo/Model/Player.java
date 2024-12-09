@@ -2,12 +2,14 @@ package io.github.jeangiraldoo.cincuentazo.Model;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
     private String name;
+    private VBox container;
     private HBox layout;
     private List<Card> deck;
     private boolean eliminate;
@@ -81,6 +83,16 @@ public class Player {
         return deck.stream().anyMatch(c -> sumaMesa + c.getValue() <= 50);
     }
 
+    /**
+     * Sets the container that arranges everything related to a player on the board
+     * @param container VBox that arranges player-specific elements
+     */
+    public void setPlayerContainer(VBox container){
+        this.container = container;
+    }
+    public VBox getContainer(){
+        return container;
+    }
     /**
      * Sets the layout to be used by the player
      * @param layout layout which will arrange the player's cards

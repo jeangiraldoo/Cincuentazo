@@ -8,6 +8,7 @@ import io.github.jeangiraldoo.cincuentazo.Model.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class GameController {
     @FXML
     private HBox mainDeck;
     private List<HBox> hBoxList = new ArrayList<>();
+    private List<VBox> vBoxList = new ArrayList<>();
     private CardDeck mazo;
     private Mesa mesa;
     private int difficulty;
@@ -38,6 +40,11 @@ public class GameController {
      * Sets up the game's board with its initial state and starts the game
      */
     private void iniciarJuego() {
+        VBox humanVBox = new VBox();
+        humanVBox.setLayoutX(241.0);
+        humanVBox.setLayoutY(378.0);
+        Label humanLabel = new Label("Player");
+        humanVBox.getChildren().add(humanLabel);
         HBox humanHbox = new HBox();
         humanHbox.setId("humanHbox");
         humanHbox.setLayoutX(241.0);
@@ -45,7 +52,13 @@ public class GameController {
         humanHbox.setPrefHeight(100.0);
         humanHbox.setPrefWidth(200.0);
         humanHbox.setStyle("-fx-background-color: #2E8B57;");
+        humanVBox.getChildren().add(humanHbox);
 
+        VBox machineOneVBox = new VBox();
+        machineOneVBox.setLayoutX(241.0);
+        machineOneVBox.setLayoutY(46.0);
+        Label machineOneLabel = new Label("Machine 1");
+        machineOneVBox.getChildren().add(machineOneLabel);
         HBox machineOne = new HBox();
         machineOne.setId("machineOne");
         machineOne.setLayoutX(241.0);
@@ -53,7 +66,13 @@ public class GameController {
         machineOne.setPrefHeight(100.0);
         machineOne.setPrefWidth(200.0);
         machineOne.setStyle("-fx-background-color: #2E8B57;");
+        machineOneVBox.getChildren().add(machineOne);
 
+        VBox machineThreeVBox = new VBox();
+        machineThreeVBox.setLayoutX(14.0);
+        machineThreeVBox.setLayoutY(214.0);
+        Label machineThreeLabel = new Label("Machine 3");
+        machineThreeVBox.getChildren().add(machineThreeLabel);
         HBox machineThree = new HBox();
         machineThree.setId("machineThree");
         machineThree.setLayoutX(14.0);
@@ -61,7 +80,13 @@ public class GameController {
         machineThree.setPrefHeight(100.0);
         machineThree.setPrefWidth(200.0);
         machineThree.setStyle("-fx-background-color: #2E8B57;");
+        machineThreeVBox.getChildren().add(machineThree);
 
+        VBox machineTwoVBox = new VBox();
+        machineTwoVBox.setLayoutX(465.0);
+        machineTwoVBox.setLayoutY(214.0);
+        Label machineTwoLabel = new Label("Machine 2");
+        machineTwoVBox.getChildren().add(machineTwoLabel);
         HBox machineTwo = new HBox();
         machineTwo.setId("machineTwo");
         machineTwo.setLayoutX(465.0);
@@ -69,6 +94,7 @@ public class GameController {
         machineTwo.setPrefHeight(100.0);
         machineTwo.setPrefWidth(202.0);
         machineTwo.setStyle("-fx-background-color: #2E8B57;");
+        machineTwoVBox.getChildren().add(machineTwo);
 
         mainDeck = new HBox();
         mainDeck.setId("mainDeck");
@@ -80,6 +106,9 @@ public class GameController {
         hBoxList.add(machineOne);
         hBoxList.add(machineTwo);
         hBoxList.add(machineThree);
+        vBoxList.add(machineOneVBox);
+        vBoxList.add(machineTwoVBox);
+        vBoxList.add(machineThreeVBox);
 
 
         // Inicializar el mazo
@@ -94,16 +123,18 @@ public class GameController {
         jugadores = new ArrayList<>();
         Player human = new Player("Humano");
         human.setLayout(humanHbox);
+        human.setPlayerContainer(humanVBox);
         jugadores.add(human);
 
         for (int i = 0; i < difficulty; i++) {
             Player machine = new Player("Máquina " + (i + 1));
             machine.setLayout(hBoxList.get(i));
+            machine.setPlayerContainer(vBoxList.get(i));
             jugadores.add(machine);
         }
-        // Añadir solo las HBox de los jugadores que jugarán
+        // Añadir solo las VBox de los jugadores que jugarán
         for (int i = 0; i < jugadores.size(); i++) {
-            board.getChildren().add(jugadores.get(i).getLayout());
+            board.getChildren().add(jugadores.get(i).getContainer());
         }
         board.getChildren().add(mainDeck);
 
