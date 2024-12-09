@@ -27,18 +27,34 @@ public class Card {
         }
     }
 
+    /**
+     * Returns the rank
+     * @return rank
+     */
     public String getRank() {
         return rank;
     }
 
+    /**
+     * Returns the suit
+     * @return suit
+     */
     public String getSuit() {
         return suit;
     }
 
+    /**
+     * Returns the value of the card
+     * @return
+     */
     public int getValue() {
         return value;
     }
 
+    /**
+     * Returns the path to card's image
+     * @return
+     */
     public String getImagePath() {
         return "/cards/" + rank + suit + ".jpg"; // Ruta relativa al directorio de recursos
     }
