@@ -21,16 +21,31 @@ public class MenuController {
     @FXML
     ComboBox<String> dropDownMenu = new ComboBox<>();
 
-
+    /**
+     * Loads the game's view and sets up its controller to start the game flow
+     * @throws IOException
+     */
     private void startGame() throws IOException {
         String difficultyChoice = dropDownMenu.getValue();
         int difficulty = dropDownMenu.getItems().indexOf(difficultyChoice) + 1;
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameView.fxml"));
+        System.out.println("diff init" + difficulty);
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/io/github/jeangiraldoo/cincuentazo/gameView.fxml"));
+        //FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameView.fxml"));
+        loader.setControllerFactory(controllerClass -> {
+            try {
+                GameController controller = new GameController(); // Create the controller
+                controller.setDifficulty(difficulty); // Set the difficulty
+                return controller; // Return the controller with the difficulty set
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        });
         Parent root = loader.load();
         GameController controller = loader.getController();
         controller.setDifficulty(difficulty);
         Scene scene = new Scene(root);
-        Stage stage = new Stage(); // or use primaryStage if it's the same stage
+        Stage stage = new Stage();
         stage.setTitle("Game Screen");
         stage.setScene(scene);
         stage.show();
