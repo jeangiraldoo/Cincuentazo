@@ -30,8 +30,9 @@ public class GameController {
     private GridPane remainingMazoGrid;
     private List<HBox> hBoxList = new ArrayList<>();
     private List<VBox> vBoxList = new ArrayList<>();
-    private CardDeck mazo;
+    private CardDeck remainingMazo;
     private Mesa mesa;
+    private ImageView usedMazoImageView;
     private int difficulty;
     private List<Player> jugadores;
     private int turnoActual;
@@ -65,7 +66,7 @@ public class GameController {
         remainingMazoGrid = new GridPane();
         String usedMazoMsg = "Estas son las cartas que han sido usadas:";
         String remainingMazoMsg = "Estas son las cartas que aún no han sido usasdas:";
-        ImageView usedMazoImageView = getClickableDeck("Cartas usadas", usedMazoMsg, usedMazoGrid);
+        usedMazoImageView = getClickableDeck("Cartas usadas", usedMazoMsg, usedMazoGrid);
         ImageView remainingMazoImageView = getClickableDeck("Cartas sin usar", remainingMazoMsg, remainingMazoGrid);
         deckContainer.getChildren().add(usedMazoImageView);
         deckContainer.getChildren().add(remainingMazoImageView);
@@ -78,10 +79,11 @@ public class GameController {
         vBoxList.add(machineThreeVBox);
 
         // Inicializar el mazo
-        mazo = new CardDeck();
+         remainingMazo = new CardDeck();
 
         // Seleccionar la carta inicial para la mesa
-        Card cartaInicial = mazo.takeCard();
+        Card cartaInicial = remainingMazo.takeCard();
+        usedMazoImageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(cartaInicial.getImagePath()))));
         mesa = new Mesa(cartaInicial);
 
         // Inicializar jugadores
@@ -106,7 +108,7 @@ public class GameController {
         // Repartir cartas iniciales
         for (Player jugador : jugadores) {
             for (int j = 0; j <4; j++) {
-                jugador.recibirCarta(mazo.takeCard());
+                jugador.recibirCarta(remainingMazo.takeCard());
             }
         }
 
@@ -183,7 +185,7 @@ public class GameController {
     private void updateRemainingMazo(){
         remainingMazoGrid.getChildren().clear();
         int numColumns = 10;
-        List<Card> cards = mazo.getCards();
+        List<Card> cards = remainingMazo.getCards();
         for (int i = 0; i < cards.size(); i++) {
             int row = i / numColumns;
             int col = i % numColumns;
@@ -237,12 +239,12 @@ public class GameController {
             mesa.agregarCarta(jugadorActual.jugarCarta(carta));
 
             // Reemplazar la carta
-            if (!mazo.isEmpty()) {
-                jugadorActual.recibirCarta(mazo.takeCard());
+            if (!remainingMazo.isEmpty()) {
+                jugadorActual.recibirCarta(remainingMazo.takeCard());
             } else {
-                mazo.addCards(mesa.reiniciarMazo());
-                if (!mazo.isEmpty()) {
-                    jugadorActual.recibirCarta(mazo.takeCard());
+                remainingMazo.addCards(mesa.reiniciarMazo());
+                if (!remainingMazo.isEmpty()) {
+                    jugadorActual.recibirCarta(remainingMazo.takeCard());
                 }
             }
         }
@@ -252,7 +254,7 @@ public class GameController {
             mostrarMensajeFin("¡" + jugadorActual.getName() + " ganó el juego!");
             return;
         }
-
+        usedMazoImageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath()))));
         avanzarTurno();
     }
 
