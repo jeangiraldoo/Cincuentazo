@@ -26,7 +26,8 @@ public class GameController {
 
     @FXML
     private HBox deckContainer;
-    private GridPane grid;
+    private GridPane usedMazoGrid;
+    private GridPane remainingMazoGrid;
     private List<HBox> hBoxList = new ArrayList<>();
     private List<VBox> vBoxList = new ArrayList<>();
     private CardDeck mazo;
@@ -63,10 +64,10 @@ public class GameController {
         alert.setTitle("Mazo");
         alert.setHeaderText("Este es el estado actual del mazo:");
         alert.setContentText("Below is a GridPane:");
-        grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        alert.getDialogPane().setContent(grid);
+        usedMazoGrid = new GridPane();
+        usedMazoGrid.setHgap(10);
+        usedMazoGrid.setVgap(10);
+        alert.getDialogPane().setContent(usedMazoGrid);
         deckContainer = createDeckContainer("mainDeck", 241.0, 214.0, 100.0, 200.0);
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/reverseCard.jpg")));
         ImageView reverseCard = new ImageView(image);
@@ -74,6 +75,21 @@ public class GameController {
         reverseCard.setFitWidth(50);
         reverseCard.setOnMouseClicked(event -> alert.showAndWait());
         deckContainer.getChildren().add(reverseCard);
+
+        Alert remainingMazoAlert = new Alert(Alert.AlertType.INFORMATION);
+        remainingMazoAlert.setTitle("Mazo");
+        remainingMazoAlert.setHeaderText("Este es el estado actual del mazo:");
+        remainingMazoAlert.setContentText("Below is a GridPane:");
+        remainingMazoGrid = new GridPane();
+        remainingMazoGrid.setHgap(10);
+        remainingMazoGrid.setVgap(10);
+        remainingMazoAlert.getDialogPane().setContent(remainingMazoGrid);
+        Image reverseCardImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/reverseCard.jpg")));
+        ImageView reverseCardImageView = new ImageView(image);
+        reverseCardImageView.setFitHeight(100);
+        reverseCardImageView.setFitWidth(50);
+        reverseCardImageView.setOnMouseClicked(event -> remainingMazoAlert.showAndWait());
+        deckContainer.getChildren().add(reverseCardImageView);
 
         hBoxList.add(machineOne);
         hBoxList.add(machineTwo);
@@ -144,7 +160,8 @@ public class GameController {
      * Updates the view based on the current state of the game
      */
     private void actualizarVista() {
-        actualizarMesa();
+        updateUsedMazo();
+        updateRemainingMazo();
         actualizarCartasJugador();
         actualizarEstado();
     }
@@ -152,8 +169,8 @@ public class GameController {
     /**
      * Updates the table based on the current state of the game
      */
-    private void actualizarMesa() {
-        grid.getChildren().clear();
+    private void updateUsedMazo() {
+        usedMazoGrid.getChildren().clear();
         int numColumns = 10;
         List<Card> cards = mesa.getCartasMesa();
         for (int i = 0; i < cards.size(); i++) {
@@ -164,7 +181,23 @@ public class GameController {
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(50);
             imageView.setFitHeight(75);
-            grid.add(imageView, col, row);
+            usedMazoGrid.add(imageView, col, row);
+        }
+    }
+
+    private void updateRemainingMazo(){
+        remainingMazoGrid.getChildren().clear();
+        int numColumns = 10;
+        List<Card> cards = mazo.getCards();
+        for (int i = 0; i < cards.size(); i++) {
+            int row = i / numColumns;
+            int col = i % numColumns;
+            Card card = cards.get(i);
+            Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(50);
+            imageView.setFitHeight(75);
+            remainingMazoGrid.add(imageView, col, row);
         }
     }
 

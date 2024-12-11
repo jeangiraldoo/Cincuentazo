@@ -51,4 +51,8 @@ public class CardDeck {
     public boolean isEmpty() {
         return cards.isEmpty();
     }
+
+    public List<Card> getCards() {
+        return cards;
+    }
 }
