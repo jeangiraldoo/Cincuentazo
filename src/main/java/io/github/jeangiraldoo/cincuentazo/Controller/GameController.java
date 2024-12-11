@@ -154,8 +154,7 @@ public class GameController {
      */
     private void actualizarVista() {
         actualizarMesa();
-        actualizarCartasHumanas();
-        actualizarCartasMaquinas();
+        actualizarCartasJugador();
         actualizarEstado();
     }
 
@@ -174,51 +173,21 @@ public class GameController {
         }
     }
 
-    /**
-     * Updates the deck used by the human player
-     */
-    private void actualizarCartasHumanas() {
-        Player jugador = jugadores.get(0);
-        jugador.clearLayout();
+    private void actualizarCartasJugador() {
+        for (int i = 0; i < jugadores.size(); i++) {
+            Player jugador = jugadores.get(i);
+            jugador.clearLayout();
 
-        for (Card carta : jugador.getDeck()) {
-            Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath())));
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(50);  // Ancho de la carta
-            imageView.setFitHeight(75); // Alto de la carta
-
-            imageView.setOnMouseClicked(event -> jugarCarta(carta));
-            jugador.insertIntoLayout(imageView);
-            //humanHbox.getChildren().add(imageView);
-        }
-    }
-
-    /**
-     * Updates the decks used by all of the machines in the game
-     */
-    private void actualizarCartasMaquinas() {
-        for (int i = 1; i < jugadores.size(); i++) {
-            Player maquina = jugadores.get(i);
-            actualizarCartasMaquina(maquina.getLayout(), i);
-        }
-    }
-
-    /**
-     * Updates the deck of a specific machine
-     * @param maquinaHbox The machine's layout
-     * @param indiceJugador The machine's index
-     */
-    private void actualizarCartasMaquina(HBox maquinaHbox, int indiceJugador) {
-        maquinaHbox.getChildren().clear();
-        Player maquina = jugadores.get(indiceJugador);
-
-        for (Card carta : maquina.getDeck()) {
-            Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath())));
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(50);
-            imageView.setFitHeight(75);
-
-            maquinaHbox.getChildren().add(imageView); // Sin evento de clic
+            for (Card carta : jugador.getDeck()) {
+                Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath())));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(50);  // Ancho de la carta
+                imageView.setFitHeight(75); // Alto de la carta
+                if (i == 0){
+                    imageView.setOnMouseClicked(event -> jugarCarta(carta));
+                }
+                jugador.insertIntoLayout(imageView);
+            }
         }
     }
 

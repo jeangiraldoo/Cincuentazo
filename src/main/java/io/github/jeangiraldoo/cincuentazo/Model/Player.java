@@ -90,6 +90,11 @@ public class Player {
     public void setPlayerContainer(VBox container){
         this.container = container;
     }
+
+    /**
+     * Returns the player's container
+     * @return VBox container that arranges the player's elements
+     */
     public VBox getContainer(){
         return container;
     }
