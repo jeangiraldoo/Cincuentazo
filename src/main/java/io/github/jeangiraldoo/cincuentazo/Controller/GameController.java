@@ -43,60 +43,20 @@ public class GameController {
      * Sets up the game's board with its initial state and starts the game
      */
     private void iniciarJuego() {
-        VBox humanVBox = new VBox();
-        humanVBox.setLayoutX(241.0);
-        humanVBox.setLayoutY(378.0);
-        Label humanLabel = new Label("Player");
-        humanVBox.getChildren().add(humanLabel);
-        HBox humanHbox = new HBox();
-        humanHbox.setId("humanHbox");
-        humanHbox.setLayoutX(241.0);
-        humanHbox.setLayoutY(378.0);
-        humanHbox.setPrefHeight(100.0);
-        humanHbox.setPrefWidth(200.0);
-        humanHbox.setStyle("-fx-background-color: #2E8B57;");
+        VBox humanVBox = createVisualPlayerContainer("Player", 241.0, 378.0);
+        HBox humanHbox = createDeckContainer("humanHbox", 241.0, 378.0, 100.0, 200.0);
         humanVBox.getChildren().add(humanHbox);
 
-        VBox machineOneVBox = new VBox();
-        machineOneVBox.setLayoutX(241.0);
-        machineOneVBox.setLayoutY(46.0);
-        Label machineOneLabel = new Label("Machine 1");
-        machineOneVBox.getChildren().add(machineOneLabel);
-        HBox machineOne = new HBox();
-        machineOne.setId("machineOne");
-        machineOne.setLayoutX(241.0);
-        machineOne.setLayoutY(46.0);
-        machineOne.setPrefHeight(100.0);
-        machineOne.setPrefWidth(200.0);
-        machineOne.setStyle("-fx-background-color: #2E8B57;");
+        VBox machineOneVBox = createVisualPlayerContainer("Machine 1", 241.0, 46.0);
+        HBox machineOne = createDeckContainer("machineOne", 241.0, 46.0, 100.0, 200.0);
         machineOneVBox.getChildren().add(machineOne);
 
-        VBox machineThreeVBox = new VBox();
-        machineThreeVBox.setLayoutX(14.0);
-        machineThreeVBox.setLayoutY(214.0);
-        Label machineThreeLabel = new Label("Machine 3");
-        machineThreeVBox.getChildren().add(machineThreeLabel);
-        HBox machineThree = new HBox();
-        machineThree.setId("machineThree");
-        machineThree.setLayoutX(14.0);
-        machineThree.setLayoutY(214.0);
-        machineThree.setPrefHeight(100.0);
-        machineThree.setPrefWidth(200.0);
-        machineThree.setStyle("-fx-background-color: #2E8B57;");
+        VBox machineThreeVBox = createVisualPlayerContainer("Machine 3", 14.0, 214.0);
+        HBox machineThree = createDeckContainer("machineThree", 14.0, 214.0, 100.0, 200.0);
         machineThreeVBox.getChildren().add(machineThree);
 
-        VBox machineTwoVBox = new VBox();
-        machineTwoVBox.setLayoutX(465.0);
-        machineTwoVBox.setLayoutY(214.0);
-        Label machineTwoLabel = new Label("Machine 2");
-        machineTwoVBox.getChildren().add(machineTwoLabel);
-        HBox machineTwo = new HBox();
-        machineTwo.setId("machineTwo");
-        machineTwo.setLayoutX(465.0);
-        machineTwo.setLayoutY(214.0);
-        machineTwo.setPrefHeight(100.0);
-        machineTwo.setPrefWidth(202.0);
-        machineTwo.setStyle("-fx-background-color: #2E8B57;");
+        VBox machineTwoVBox = createVisualPlayerContainer("Machine 2", 465.0, 214.0);
+        HBox machineTwo = createDeckContainer("machineTwo", 465.0, 214.0, 100.0, 202.0);
         machineTwoVBox.getChildren().add(machineTwo);
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -107,20 +67,14 @@ public class GameController {
         grid.setHgap(10);
         grid.setVgap(10);
         alert.getDialogPane().setContent(grid);
-        deckContainer = new HBox();
-        deckContainer.setId("mainDeck");
-        deckContainer.setLayoutX(241.0);
-        deckContainer.setLayoutY(214.0);
-        deckContainer.setPrefHeight(100.0);
-        deckContainer.setPrefWidth(200.0);
-        deckContainer.setAlignment(Pos.CENTER);
+        deckContainer = createDeckContainer("mainDeck", 241.0, 214.0, 100.0, 200.0);
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/reverseCard.jpg")));
         ImageView reverseCard = new ImageView(image);
         reverseCard.setFitHeight(100);
         reverseCard.setFitWidth(50);
         reverseCard.setOnMouseClicked(event -> alert.showAndWait());
         deckContainer.getChildren().add(reverseCard);
-        
+
         hBoxList.add(machineOne);
         hBoxList.add(machineTwo);
         hBoxList.add(machineThree);
@@ -165,7 +119,27 @@ public class GameController {
         turnoActual = 0; // Empieza el jugador humano
         actualizarVista();
     }
+    private VBox createVisualPlayerContainer(String name, double posX, double posY){
+        VBox playerContainer = new VBox();
+        playerContainer.setLayoutX(posX);
+        playerContainer.setLayoutY(posY);
+        Label playerLabel = new Label(name);
+        playerContainer.getChildren().add(playerLabel);
 
+        return playerContainer;
+    }
+    private HBox createDeckContainer(String id, double posX, double posY, double height, double width){
+        HBox playerDeckContainer = new HBox();
+        playerDeckContainer.setAlignment(Pos.CENTER);
+        playerDeckContainer.setId("machineOne");
+        playerDeckContainer.setLayoutX(posX);
+        playerDeckContainer.setLayoutY(posY);
+        playerDeckContainer.setPrefHeight(height);
+        playerDeckContainer.setPrefWidth(width);
+        playerDeckContainer.setStyle("-fx-background-color: #2E8B57;");
+
+        return playerDeckContainer;
+    }
     /**
      * Updates the view based on the current state of the game
      */
