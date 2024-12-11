@@ -60,36 +60,15 @@ public class GameController {
         HBox machineTwo = createDeckContainer("machineTwo", 465.0, 214.0, 100.0, 202.0);
         machineTwoVBox.getChildren().add(machineTwo);
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Mazo");
-        alert.setHeaderText("Este es el estado actual del mazo:");
-        alert.setContentText("Below is a GridPane:");
-        usedMazoGrid = new GridPane();
-        usedMazoGrid.setHgap(10);
-        usedMazoGrid.setVgap(10);
-        alert.getDialogPane().setContent(usedMazoGrid);
         deckContainer = createDeckContainer("mainDeck", 241.0, 214.0, 100.0, 200.0);
-        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/reverseCard.jpg")));
-        ImageView reverseCard = new ImageView(image);
-        reverseCard.setFitHeight(100);
-        reverseCard.setFitWidth(50);
-        reverseCard.setOnMouseClicked(event -> alert.showAndWait());
-        deckContainer.getChildren().add(reverseCard);
-
-        Alert remainingMazoAlert = new Alert(Alert.AlertType.INFORMATION);
-        remainingMazoAlert.setTitle("Mazo");
-        remainingMazoAlert.setHeaderText("Este es el estado actual del mazo:");
-        remainingMazoAlert.setContentText("Below is a GridPane:");
+        usedMazoGrid = new GridPane();
         remainingMazoGrid = new GridPane();
-        remainingMazoGrid.setHgap(10);
-        remainingMazoGrid.setVgap(10);
-        remainingMazoAlert.getDialogPane().setContent(remainingMazoGrid);
-        Image reverseCardImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/reverseCard.jpg")));
-        ImageView reverseCardImageView = new ImageView(image);
-        reverseCardImageView.setFitHeight(100);
-        reverseCardImageView.setFitWidth(50);
-        reverseCardImageView.setOnMouseClicked(event -> remainingMazoAlert.showAndWait());
-        deckContainer.getChildren().add(reverseCardImageView);
+        String usedMazoMsg = "Estas son las cartas que han sido usadas:";
+        String remainingMazoMsg = "Estas son las cartas que aún no han sido usasdas:";
+        ImageView usedMazoImageView = getClickableDeck("Cartas usadas", usedMazoMsg, usedMazoGrid);
+        ImageView remainingMazoImageView = getClickableDeck("Cartas sin usar", remainingMazoMsg, remainingMazoGrid);
+        deckContainer.getChildren().add(usedMazoImageView);
+        deckContainer.getChildren().add(remainingMazoImageView);
 
         hBoxList.add(machineOne);
         hBoxList.add(machineTwo);
@@ -97,7 +76,6 @@ public class GameController {
         vBoxList.add(machineOneVBox);
         vBoxList.add(machineTwoVBox);
         vBoxList.add(machineThreeVBox);
-
 
         // Inicializar el mazo
         mazo = new CardDeck();
@@ -134,6 +112,23 @@ public class GameController {
 
         turnoActual = 0; // Empieza el jugador humano
         actualizarVista();
+    }
+
+    private ImageView getClickableDeck(String title, String message, GridPane grid){
+        grid.setHgap(10);
+        grid.setVgap(10);
+
+        Alert remainingMazoAlert = new Alert(Alert.AlertType.INFORMATION);
+        remainingMazoAlert.setTitle(title);
+        remainingMazoAlert.setHeaderText(message);
+        remainingMazoAlert.getDialogPane().setContent(grid);
+
+        Image reverseCardImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/reverseCard.jpg")));
+        ImageView reverseCardImageView = new ImageView(reverseCardImage);
+        reverseCardImageView.setFitHeight(100);
+        reverseCardImageView.setFitWidth(50);
+        reverseCardImageView.setOnMouseClicked(event -> remainingMazoAlert.showAndWait());
+        return reverseCardImageView;
     }
     private VBox createVisualPlayerContainer(String name, double posX, double posY){
         VBox playerContainer = new VBox();
