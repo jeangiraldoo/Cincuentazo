@@ -1,8 +1,10 @@
 package io.github.jeangiraldoo.cincuentazo.Controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import io.github.jeangiraldoo.cincuentazo.Model.*;
 import javafx.scene.image.Image;
@@ -23,7 +25,8 @@ public class GameController {
     private Label gameState;
 
     @FXML
-    private HBox mainDeck;
+    private HBox deckContainer;
+    private GridPane grid;
     private List<HBox> hBoxList = new ArrayList<>();
     private List<VBox> vBoxList = new ArrayList<>();
     private CardDeck mazo;
@@ -96,13 +99,28 @@ public class GameController {
         machineTwo.setStyle("-fx-background-color: #2E8B57;");
         machineTwoVBox.getChildren().add(machineTwo);
 
-        mainDeck = new HBox();
-        mainDeck.setId("mainDeck");
-        mainDeck.setLayoutX(241.0);
-        mainDeck.setLayoutY(214.0);
-        mainDeck.setPrefHeight(100.0);
-        mainDeck.setPrefWidth(200.0);
-
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Mazo");
+        alert.setHeaderText("Este es el estado actual del mazo:");
+        alert.setContentText("Below is a GridPane:");
+        grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        alert.getDialogPane().setContent(grid);
+        deckContainer = new HBox();
+        deckContainer.setId("mainDeck");
+        deckContainer.setLayoutX(241.0);
+        deckContainer.setLayoutY(214.0);
+        deckContainer.setPrefHeight(100.0);
+        deckContainer.setPrefWidth(200.0);
+        deckContainer.setAlignment(Pos.CENTER);
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/reverseCard.jpg")));
+        ImageView reverseCard = new ImageView(image);
+        reverseCard.setFitHeight(100);
+        reverseCard.setFitWidth(50);
+        reverseCard.setOnMouseClicked(event -> alert.showAndWait());
+        deckContainer.getChildren().add(reverseCard);
+        
         hBoxList.add(machineOne);
         hBoxList.add(machineTwo);
         hBoxList.add(machineThree);
@@ -112,7 +130,6 @@ public class GameController {
 
 
         // Inicializar el mazo
-        System.out.println(difficulty);
         mazo = new CardDeck();
 
         // Seleccionar la carta inicial para la mesa
@@ -136,7 +153,7 @@ public class GameController {
         for (int i = 0; i < jugadores.size(); i++) {
             board.getChildren().add(jugadores.get(i).getContainer());
         }
-        board.getChildren().add(mainDeck);
+        board.getChildren().add(deckContainer);
 
         // Repartir cartas iniciales
         for (Player jugador : jugadores) {
@@ -162,14 +179,18 @@ public class GameController {
      * Updates the table based on the current state of the game
      */
     private void actualizarMesa() {
-        mainDeck.getChildren().clear();
-        for (Card carta : mesa.getCartasMesa()) {
-            Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath())));
+        grid.getChildren().clear();
+        int numColumns = 10;
+        List<Card> cards = mesa.getCartasMesa();
+        for (int i = 0; i < cards.size(); i++) {
+            int row = i / numColumns;
+            int col = i % numColumns;
+            Card card = cards.get(i);
+            Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(50);
             imageView.setFitHeight(75);
-
-            mainDeck.getChildren().add(imageView);
+            grid.add(imageView, col, row);
         }
     }
 
