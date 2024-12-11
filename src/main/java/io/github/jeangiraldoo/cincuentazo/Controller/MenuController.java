@@ -55,11 +55,34 @@ public class MenuController {
      * Clears the root node and inserts new nodes related to difficulty settings,
      * allowing the user to select a difficulty level.
      */
-    private void on_play_button(){
+    private void on_play_button() {
         rootNode.getChildren().clear();
+
+
         Label choiceLabel = new Label("¿Contra cuántos oponentes deseas jugar?");
+        choiceLabel.setStyle("-fx-font-family: 'Times New Roman', serif;\n" +
+                "    -fx-font-size: 40px;\n" +
+                "    -fx-text-fill: #ffd700; /* Dorado */\n" +
+                "    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 12, 0.6, 0, 3);\n" +
+                "    -fx-alignment: center;");
+
+
+        dropDownMenu.getItems().clear(); // Asegurarse de que esté limpio antes de agregar ítems
         dropDownMenu.getItems().addAll("Un oponente", "2 oponentes", "3 oponentes");
+        dropDownMenu.setStyle("-fx-font-size: 16px; -fx-background-color: lightgreen; -fx-border-color: darkgreen; -fx-padding: 5px;");
+
+
         Button startGameButton = new Button("Iniciar juego");
+        startGameButton.setStyle("-fx-background-color: linear-gradient(to bottom, #32cd32, #228b22);\n" +
+                "    -fx-font-family: 'Verdana', sans-serif;\n" +
+                "    -fx-font-size: 18px;\n" +
+                "    -fx-text-fill: white;\n" +
+                "    -fx-border-color: #ffd700; /* Bordes dorados */\n" +
+                "    -fx-border-width: 2px;\n" +
+                "    -fx-border-radius: 12px;\n" +
+                "    -fx-background-radius: 12px;\n" +
+                "    -fx-padding: 10 20;\n" +
+                "    -fx-cursor: hand;");
         startGameButton.setOnAction(event -> {
             try {
                 startGame();
@@ -67,10 +90,13 @@ public class MenuController {
                 throw new RuntimeException(e);
             }
         });
+
+
         rootNode.getChildren().add(choiceLabel);
         rootNode.getChildren().add(dropDownMenu);
         rootNode.getChildren().add(startGameButton);
     }
+
 
     @FXML
     /**
