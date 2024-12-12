@@ -217,7 +217,7 @@ public class GameController {
         playerDeckContainer.setLayoutY(posY);
         playerDeckContainer.setPrefHeight(height);
         playerDeckContainer.setPrefWidth(width);
-        playerDeckContainer.setStyle("-fx-background-color: #2E8B57;");
+        playerDeckContainer.setStyle("-fx-background-color:  #006400");
 
         return playerDeckContainer;
     }
