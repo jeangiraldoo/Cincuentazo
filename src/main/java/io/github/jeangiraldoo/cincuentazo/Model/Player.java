@@ -128,4 +128,5 @@ public class Player {
     public HBox getLayout(){
         return this.layout;
     }
+
 }

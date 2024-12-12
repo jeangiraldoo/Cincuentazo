@@ -125,7 +125,7 @@ public class GameController {
         actualizarVista();
     }
 
-    private ImageView getClickableDeck(String title, String message, GridPane grid){
+    private ImageView getClickableDeck(String title, String message, GridPane grid) {
         grid.setHgap(10);
         grid.setVgap(10);
 
@@ -138,9 +138,54 @@ public class GameController {
         ImageView reverseCardImageView = new ImageView(reverseCardImage);
         reverseCardImageView.setFitHeight(100);
         reverseCardImageView.setFitWidth(50);
-        reverseCardImageView.setOnMouseClicked(event -> remainingMazoAlert.showAndWait());
+
+        // Evento para mostrar las cartas del mazo (alert)
+        reverseCardImageView.setOnMouseClicked(event -> {
+            if (title.equals("Cartas sin usar")) {
+                tomarCartaDelMazo();
+            } else {
+                remainingMazoAlert.showAndWait();
+            }
+        });
+
         return reverseCardImageView;
     }
+
+    private void tomarCartaDelMazo() {
+        // Obtener el jugador humano (primer jugador)
+        Player jugadorHumano = jugadores.get(0);
+
+        // Validar si hay cartas en el mazo
+        if (remainingMazo.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Mazo vacío");
+            alert.setHeaderText("El mazo está vacío.");
+            alert.setContentText("No hay cartas disponibles para tomar.");
+            alert.showAndWait();
+            return;
+        }
+
+        // Tomar una carta del mazo
+        Card cartaNueva = remainingMazo.takeCard();
+
+        // Añadir la carta al jugador humano
+        jugadorHumano.recibirCarta(cartaNueva);
+
+        // Actualizar la vista del jugador humano
+        actualizarCartasJugador(jugadorHumano);
+
+        // Mostrar mensaje de confirmación
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Carta tomada");
+        alert.setHeaderText("¡Has tomado una carta!");
+        alert.setContentText("La carta fue añadida a tu mano.");
+        alert.showAndWait();
+
+        // Actualizar el mazo restante en la interfaz
+        updateRemainingMazo();
+    }
+
+
     private VBox createVisualPlayerContainer(String name, double posX, double posY){
         VBox playerContainer = new VBox();
         playerContainer.setLayoutX(posX);
@@ -260,27 +305,50 @@ public class GameController {
             // Jugar la carta
             mesa.agregarCarta(jugadorActual.jugarCarta(carta));
 
-            // Reemplazar la carta
-            if (!remainingMazo.isEmpty()) {
-                jugadorActual.recibirCarta(remainingMazo.takeCard());
+            // Verificar si queda un único jugador
+            if (jugadores.stream().filter(j -> !j.isEliminate()).count() == 1) {
+                mostrarMensajeFin("¡" + jugadorActual.getName() + " ganó el juego!");
+                return;
+            }
+
+            // Reemplazar la carta después de un delay (solo para jugador humano)
+            if (jugadorActual.getName().equals("Humano")) {
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(6000); // Retraso de 2 segundos
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    Platform.runLater(() -> {
+                        if (!remainingMazo.isEmpty()) {
+                            jugadorActual.recibirCarta(remainingMazo.takeCard());
+                        } else {
+                            remainingMazo.addCards(mesa.reiniciarMazo());
+                            if (!remainingMazo.isEmpty()) {
+                                jugadorActual.recibirCarta(remainingMazo.takeCard());
+                            }
+                        }
+                        actualizarCartasJugador(jugadorActual);
+                    });
+                }).start();
             } else {
-                remainingMazo.addCards(mesa.reiniciarMazo());
                 if (!remainingMazo.isEmpty()) {
                     jugadorActual.recibirCarta(remainingMazo.takeCard());
+                } else {
+                    remainingMazo.addCards(mesa.reiniciarMazo());
+                    if (!remainingMazo.isEmpty()) {
+                        jugadorActual.recibirCarta(remainingMazo.takeCard());
+                    }
                 }
             }
         }
 
-        // Verificar si queda un único jugador
-        if (jugadores.stream().filter(j -> !j.isEliminate()).count() == 1) {
-            mostrarMensajeFin("¡" + jugadorActual.getName() + " ganó el juego!");
-            return;
-        }
-        System.out.println(jugadorActual.getName());
-        if(!jugadorActual.getName().equals("Humano")){
+        // Avanzar el turno después de un delay para la máquina
+        if (!jugadorActual.getName().equals("Humano")) {
             new Thread(() -> {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(5000); // Retraso de 2 segundos para el turno de la máquina
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -292,11 +360,14 @@ public class GameController {
                 });
             }).start();
         } else {
-            actualizarCartasJugador(jugadorActual);
             avanzarTurno();
+            actualizarCartasJugador(jugadorActual);
         }
+
+        // Actualizar la imagen de la última carta usada
         usedMazoImageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath()))));
     }
+
 
     /**
      * Upates the game's state by setting which player can play in the next turn
