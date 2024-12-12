@@ -1,5 +1,6 @@
 package io.github.jeangiraldoo.cincuentazo.Controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -118,6 +119,9 @@ public class GameController {
         }
 
         turnoActual = 0; // Empieza el jugador humano
+        for(Player jugador: jugadores){
+            actualizarCartasJugador(jugador);
+        }
         actualizarVista();
     }
 
@@ -164,7 +168,7 @@ public class GameController {
     private void actualizarVista() {
         updateUsedMazo();
         updateRemainingMazo();
-        actualizarCartasJugador();
+        //actualizarCartasJugador();
         actualizarEstado();
     }
 
@@ -203,22 +207,35 @@ public class GameController {
         }
     }
 
-    private void actualizarCartasJugador() {
-        for (int i = 0; i < jugadores.size(); i++) {
-            Player jugador = jugadores.get(i);
-            jugador.clearLayout();
+    private void actualizarCartasJugador(Player jugador) {
+//        for (int i = 0; i < jugadores.size(); i++) {
+//            Player jugador = jugadores.get(i);
+//            jugador.clearLayout();
+//
+//            for (Card carta : jugador.getDeck()) {
+//                Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath())));
+//                ImageView imageView = new ImageView(image);
+//                imageView.setFitWidth(50);  // Ancho de la carta
+//                imageView.setFitHeight(75); // Alto de la carta
+//                if (i == 0){
+//                    imageView.setOnMouseClicked(event -> jugarCarta(carta));
+//                }
+//                jugador.insertIntoLayout(imageView);
+//            }
+//        }
+        jugador.clearLayout();
 
-            for (Card carta : jugador.getDeck()) {
-                Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath())));
-                ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(50);  // Ancho de la carta
-                imageView.setFitHeight(75); // Alto de la carta
-                if (i == 0){
-                    imageView.setOnMouseClicked(event -> jugarCarta(carta));
-                }
-                jugador.insertIntoLayout(imageView);
+        for (Card carta : jugador.getDeck()) {
+            Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath())));
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(50);  // Ancho de la carta
+            imageView.setFitHeight(75); // Alto de la carta
+            if (jugador.getName().equals("Humano")){
+                imageView.setOnMouseClicked(event -> jugarCarta(carta));
             }
+            jugador.insertIntoLayout(imageView);
         }
+
     }
 
     /**
@@ -259,8 +276,26 @@ public class GameController {
             mostrarMensajeFin("¡" + jugadorActual.getName() + " ganó el juego!");
             return;
         }
+        System.out.println(jugadorActual.getName());
+        if(!jugadorActual.getName().equals("Humano")){
+            new Thread(() -> {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                Platform.runLater(() -> {
+                    avanzarTurno();
+                    actualizarCartasJugador(jugadorActual);
+                    usedMazoImageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath()))));
+                });
+            }).start();
+        } else {
+            actualizarCartasJugador(jugadorActual);
+            avanzarTurno();
+        }
         usedMazoImageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath()))));
-        avanzarTurno();
     }
 
     /**
