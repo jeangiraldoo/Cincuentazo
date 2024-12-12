@@ -3,6 +3,7 @@ package io.github.jeangiraldoo.cincuentazo.Controller;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -104,6 +105,10 @@ public class GameController {
             board.getChildren().add(jugadores.get(i).getContainer());
         }
         board.getChildren().add(deckContainer);
+        Button infoButton = new Button("¿Cómo jugar?");
+        infoButton.setStyle("-fx-background-color: #329c4e;");
+        infoButton.setOnAction(event -> on_info_button());
+        board.getChildren().add(infoButton);
 
         // Repartir cartas iniciales
         for (Player jugador : jugadores) {
@@ -309,5 +314,23 @@ public class GameController {
      */
     public void setDifficulty(Integer difficulty){
         this.difficulty = difficulty;
+    }
+    private void on_info_button() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Tutorial");
+        alert.setHeaderText("Tutorial de Cincuentazo");
+        alert.setContentText(
+                "Cincuentazo es un juego de cartas de Poker donde los jugadores (humano y máquina) deben sobrevivir utilizando sus cartas.\n\n" +
+                        "**Reglas principales**:\n" +
+                        "• La suma en la mesa no debe exceder 50 (>50).\n" +
+                        "• Cada jugador comienza con 4 cartas y toma nuevas del mazo tras su turno.\n\n" +
+                        "**Valores de las cartas**:\n" +
+                        "• 2-8 y 10: Suman su número.\n" +
+                        "• 9: No afecta la suma.\n" +
+                        "• J, Q, K: Restan 10.\n" +
+                        "• A: Suma 1 o 10, según convenga.\n\n" +
+                        "Recuerda jugar estratégicamente para mantener la suma debajo de 50."
+        );
+        alert.showAndWait();
     }
 }

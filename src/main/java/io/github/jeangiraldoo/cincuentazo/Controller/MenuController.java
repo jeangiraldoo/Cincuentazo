@@ -66,11 +66,9 @@ public class MenuController {
                 "    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 12, 0.6, 0, 3);\n" +
                 "    -fx-alignment: center;");
 
-
         dropDownMenu.getItems().clear(); // Asegurarse de que esté limpio antes de agregar ítems
         dropDownMenu.getItems().addAll("Un oponente", "2 oponentes", "3 oponentes");
         dropDownMenu.setStyle("-fx-font-size: 16px; -fx-background-color: lightgreen; -fx-border-color: darkgreen; -fx-padding: 5px;");
-
 
         Button startGameButton = new Button("Iniciar juego");
         startGameButton.setStyle("-fx-background-color: linear-gradient(to bottom, #32cd32, #228b22);\n" +
@@ -90,7 +88,6 @@ public class MenuController {
                 throw new RuntimeException(e);
             }
         });
-
 
         rootNode.getChildren().add(choiceLabel);
         rootNode.getChildren().add(dropDownMenu);
