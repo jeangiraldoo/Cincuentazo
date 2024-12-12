@@ -4,13 +4,16 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<HBox fx:id="mainContainer" xmlns="http://javafx.com/javafx/22"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.jeangiraldoo.cincuentazo.Controller.GameController"
+      alignment="CENTER" style="-fx-background-color: #2E8B57;">
+   <Pane fx:id="board" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0"
+         prefWidth="681.0" style="-fx-background-color: #2E8B57;" >
+      <Label fx:id="gameState" layoutX="241.0" layoutY="314.0" text="Label" textFill="WHITE">
+         <font>
+            <Font name="Impact" size="18.0"/>
+         </font>
+      </Label>
+   </Pane>
+</HBox>
 
-<Pane fx:id="board" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0"
-      prefWidth="681.0" style="-fx-background-color: #2E8B57;" xmlns="http://javafx.com/javafx/22"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.jeangiraldoo.cincuentazo.Controller.GameController">
-   <Label fx:id="gameState" layoutX="241.0" layoutY="314.0" text="Label" textFill="WHITE">
-      <font>
-         <Font name="Impact" size="18.0"/>
-      </font>
-   </Label>
-</Pane>

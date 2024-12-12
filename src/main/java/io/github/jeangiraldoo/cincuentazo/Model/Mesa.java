@@ -13,6 +13,8 @@ public class Mesa {
         this.sumaMesa = cartaInicial.getValue();
     }
 
+
+
     public int getSumaMesa() {
         return sumaMesa;
     }
