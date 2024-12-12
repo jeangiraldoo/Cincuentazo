@@ -107,7 +107,16 @@ public class GameController {
         }
         board.getChildren().add(deckContainer);
         Button infoButton = new Button("¿Cómo jugar?");
-        infoButton.setStyle("-fx-background-color: #329c4e;");
+        infoButton.setStyle("-fx-background-color: linear-gradient(to bottom, #32cd32, #228b22);\n" +
+                "    -fx-font-family: 'Verdana', sans-serif;\n" +
+                "    -fx-font-size: 18px;\n" +
+                "    -fx-text-fill: white;\n" +
+                "    -fx-border-color: #ffd700; /* Bordes dorados */\n" +
+                "    -fx-border-width: 2px;\n" +
+                "    -fx-border-radius: 12px;\n" +
+                "    -fx-background-radius: 12px;\n" +
+                "    -fx-padding: 10 20;\n" +
+                "    -fx-cursor: hand;");
         infoButton.setOnAction(event -> on_info_button());
         board.getChildren().add(infoButton);
 
