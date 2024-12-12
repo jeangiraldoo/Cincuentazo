@@ -200,6 +200,11 @@ public class GameController {
         playerContainer.setLayoutX(posX);
         playerContainer.setLayoutY(posY);
         Label playerLabel = new Label(name);
+        playerLabel.setStyle("-fx-font-family: 'Times New Roman', serif;\n" +
+                "    -fx-font-size: 15px;\n" +
+                "    -fx-text-fill: #ffd700; /* Dorado */\n" +
+                "    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 12, 0.6, 0, 3);\n" +
+                "    -fx-alignment: center;");
         playerContainer.getChildren().add(playerLabel);
 
         return playerContainer;
