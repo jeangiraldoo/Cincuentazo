@@ -148,10 +148,12 @@ public class GameController {
         reverseCardImageView.setFitHeight(100);
         reverseCardImageView.setFitWidth(50);
 
-        // Evento para mostrar las cartas del mazo (alert)
+        // Evento para mostrar las cartas del mazo (alert) o tomar una carta del mazo sin usar
         reverseCardImageView.setOnMouseClicked(event -> {
             if (title.equals("Cartas sin usar")) {
                 tomarCartaDelMazo();
+                // Eliminar la imagen del mazo después de tomar la carta
+                board.getChildren().remove(reverseCardImageView);
             } else {
                 remainingMazoAlert.showAndWait();
             }
@@ -159,6 +161,7 @@ public class GameController {
 
         return reverseCardImageView;
     }
+
 
     private void tomarCartaDelMazo() {
         // Obtener el jugador humano (primer jugador)
@@ -193,6 +196,7 @@ public class GameController {
         // Actualizar el mazo restante en la interfaz
         updateRemainingMazo();
     }
+
 
 
     private VBox createVisualPlayerContainer(String name, double posX, double posY){
@@ -302,6 +306,7 @@ public class GameController {
      */
     private void actualizarEstado() {
         Player jugadorActual = jugadores.get(turnoActual);
+        System.out.println("turno actual: " + jugadorActual.getName());
         gameState.setText("Turno: " + jugadorActual.getName() + " | Suma Mesa: " + mesa.getSumaMesa());
     }
 
@@ -318,6 +323,8 @@ public class GameController {
         } else {
             // Jugar la carta
             mesa.agregarCarta(jugadorActual.jugarCarta(carta));
+            System.out.println("Mesa updated: " + mesa.getSumaMesa());
+            Platform.runLater(this::actualizarEstado);
 
             // Verificar si queda un único jugador
             if (jugadores.stream().filter(j -> !j.isEliminate()).count() == 1) {
@@ -329,7 +336,7 @@ public class GameController {
             if (jugadorActual.getName().equals("Humano")) {
                 new Thread(() -> {
                     try {
-                        Thread.sleep(6000); // Retraso de 2 segundos
+                        Thread.sleep(2000); // Retraso de 2 segundos
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -344,6 +351,7 @@ public class GameController {
                             }
                         }
                         actualizarCartasJugador(jugadorActual);
+                        avanzarTurno(); // Avanzar turno después de reemplazar la carta
                     });
                 }).start();
             } else {
@@ -355,32 +363,15 @@ public class GameController {
                         jugadorActual.recibirCarta(remainingMazo.takeCard());
                     }
                 }
+                avanzarTurno();
+                actualizarCartasJugador(jugadorActual);
             }
-        }
-
-        // Avanzar el turno después de un delay para la máquina
-        if (!jugadorActual.getName().equals("Humano")) {
-            new Thread(() -> {
-                try {
-                    Thread.sleep(5000); // Retraso de 2 segundos para el turno de la máquina
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                Platform.runLater(() -> {
-                    avanzarTurno();
-                    actualizarCartasJugador(jugadorActual);
-                    usedMazoImageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath()))));
-                });
-            }).start();
-        } else {
-            avanzarTurno();
-            actualizarCartasJugador(jugadorActual);
         }
 
         // Actualizar la imagen de la última carta usada
         usedMazoImageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath()))));
     }
+
 
 
     /**
@@ -391,13 +382,30 @@ public class GameController {
             turnoActual = (turnoActual + 1) % jugadores.size();
         } while (jugadores.get(turnoActual).isEliminate());
 
-        // Si es turno de una máquina, jugar automáticamente
-        if (!jugadores.get(turnoActual).getName().equals("Humano")) {
-            jugarTurnoMaquina();
-        }
+        // Actualizar el estado para mostrar el turno de la máquina antes de que juegue
+        Platform.runLater(this::actualizarEstado);
 
-        actualizarVista();
+        // Si es turno de una máquina, esperar antes de que la máquina juegue
+        if (!jugadores.get(turnoActual).getName().equals("Humano")) {
+            new Thread(() -> {
+                try {
+                    Thread.sleep(2000); // Retraso de 2 segundos para el turno de la máquina
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                Platform.runLater(() -> {
+                    jugarTurnoMaquina(); // Acción de la máquina
+                    actualizarCartasJugador(jugadores.get(turnoActual));
+                    usedMazoImageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(mesa.getCartasMesa().get(mesa.getCartasMesa().size() - 1).getImagePath()))));
+                    actualizarEstado(); // Actualizar el estado después de que la máquina juegue
+                });
+            }).start();
+        } else {
+            actualizarEstado();
+        }
     }
+
 
     /**
      * Encapsulates the actions to be done by the machine when it is its turn
