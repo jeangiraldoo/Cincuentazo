@@ -20,6 +20,7 @@ public class Mesa {
     }
 
     public void agregarCarta(Card carta) {
+        System.out.println("Score increased!");
         cartasMesa.add(carta);
         sumaMesa += carta.getValue();
     }
