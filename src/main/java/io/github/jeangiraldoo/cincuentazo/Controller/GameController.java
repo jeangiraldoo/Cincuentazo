@@ -131,6 +131,7 @@ public class GameController {
         for(Player jugador: jugadores){
             actualizarCartasJugador(jugador);
         }
+        actualizarEstado();
         actualizarVista();
     }
 
@@ -228,7 +229,7 @@ public class GameController {
         updateUsedMazo();
         updateRemainingMazo();
         //actualizarCartasJugador();
-        actualizarEstado();
+        //actualizarEstado();
     }
 
     /**
@@ -302,6 +303,7 @@ public class GameController {
      */
     private void actualizarEstado() {
         Player jugadorActual = jugadores.get(turnoActual);
+        System.out.println("turno actual: " + jugadorActual.getName());
         gameState.setText("Turno: " + jugadorActual.getName() + " | Suma Mesa: " + mesa.getSumaMesa());
     }
 
@@ -317,7 +319,11 @@ public class GameController {
             }
         } else {
             // Jugar la carta
+
             mesa.agregarCarta(jugadorActual.jugarCarta(carta));
+            System.out.println("Mesa updated: " + mesa.getSumaMesa());
+
+
 
             // Verificar si queda un único jugador
             if (jugadores.stream().filter(j -> !j.isEliminate()).count() == 1) {
@@ -329,7 +335,7 @@ public class GameController {
             if (jugadorActual.getName().equals("Humano")) {
                 new Thread(() -> {
                     try {
-                        Thread.sleep(6000); // Retraso de 2 segundos
+                        Thread.sleep(2000); // Retraso de 2 segundos
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -344,6 +350,8 @@ public class GameController {
                             }
                         }
                         actualizarCartasJugador(jugadorActual);
+                        avanzarTurno();
+                        actualizarEstado();
                     });
                 }).start();
             } else {
@@ -368,14 +376,15 @@ public class GameController {
                 }
 
                 Platform.runLater(() -> {
-                    avanzarTurno();
                     actualizarCartasJugador(jugadorActual);
                     usedMazoImageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath()))));
+                    avanzarTurno();
+                    actualizarEstado();
                 });
             }).start();
         } else {
-            avanzarTurno();
-            actualizarCartasJugador(jugadorActual);
+//            actualizarEstado();
+//            actualizarCartasJugador(jugadorActual);
         }
 
         // Actualizar la imagen de la última carta usada
