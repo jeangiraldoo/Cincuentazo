@@ -47,19 +47,19 @@ public class GameController {
      * Sets up the game's board with its initial state and starts the game
      */
     private void iniciarJuego() {
-        VBox humanVBox = createVisualPlayerContainer("Player", 241.0, 378.0);
+        VBox humanVBox = createVisualPlayerContainer("Humano", 241.0, 378.0);
         HBox humanHbox = createDeckContainer("humanHbox", 241.0, 378.0, 100.0, 200.0);
         humanVBox.getChildren().add(humanHbox);
 
-        VBox machineOneVBox = createVisualPlayerContainer("Machine 1", 241.0, 46.0);
+        VBox machineOneVBox = createVisualPlayerContainer("Máquina 1", 241.0, 46.0);
         HBox machineOne = createDeckContainer("machineOne", 241.0, 46.0, 100.0, 200.0);
         machineOneVBox.getChildren().add(machineOne);
 
-        VBox machineThreeVBox = createVisualPlayerContainer("Machine 3", 14.0, 214.0);
+        VBox machineThreeVBox = createVisualPlayerContainer("Máquina 3", 14.0, 214.0);
         HBox machineThree = createDeckContainer("machineThree", 14.0, 214.0, 100.0, 200.0);
         machineThreeVBox.getChildren().add(machineThree);
 
-        VBox machineTwoVBox = createVisualPlayerContainer("Machine 2", 465.0, 214.0);
+        VBox machineTwoVBox = createVisualPlayerContainer("Máquina 2", 465.0, 214.0);
         HBox machineTwo = createDeckContainer("machineTwo", 465.0, 214.0, 100.0, 202.0);
         machineTwoVBox.getChildren().add(machineTwo);
 
