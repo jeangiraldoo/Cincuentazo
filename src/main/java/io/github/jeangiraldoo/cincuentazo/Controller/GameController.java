@@ -315,6 +315,10 @@ public class GameController {
             jugadorActual.eliminar();
             if (jugadorActual.getName().equals("Humano")) {
                 mostrarMensajeFin("¡Has sido eliminado! Perdiste el juego.");
+                avanzarTurno();
+
+            } else {
+                verificarEstadoDelJuego();
                 return;
             }
         } else {
@@ -322,7 +326,6 @@ public class GameController {
 
             mesa.agregarCarta(jugadorActual.jugarCarta(carta));
             System.out.println("Mesa updated: " + mesa.getSumaMesa());
-            actualizarCartasJugador(jugadorActual);
             actualizarEstado();
 
 
@@ -393,6 +396,51 @@ public class GameController {
         usedMazoImageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath()))));
     }
 
+    /**
+     * Verifica si solo queda un jugador en el juego y finaliza si es así.
+     */
+    private void verificarEstadoDelJuego() {
+        List<Player> jugadoresActivos = new ArrayList<>();
+        for (Player jugador : jugadores) {
+            if (!jugador.isEliminate()) {
+                jugadoresActivos.add(jugador);
+            }
+        }
+
+        if (jugadoresActivos.size() == 1) {
+            Player ganador = jugadoresActivos.get(0);
+            mostrarMensajeGanador(ganador);
+            finalizarJuego();
+        }
+    }
+
+
+
+    /**
+     * Finaliza el juego y detiene cualquier acción pendiente.
+     */
+    private void finalizarJuego() {
+        Platform.exit(); // Cierra la aplicación
+        // O puedes limpiar el tablero si deseas reiniciar el juego:
+        // board.getChildren().clear();
+    }
+
+
+    /**
+     * Muestra un mensaje con el ganador del juego.
+     *
+     * @param ganador El jugador que ganó.
+     */
+    private void mostrarMensajeGanador(Player ganador) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("¡Juego terminado!");
+        alert.setHeaderText("Tenemos un ganador");
+        alert.setContentText("El ganador es: " + ganador.getName());
+        alert.showAndWait();
+    }
+
+
+
 
     /**
      * Upates the game's state by setting which player can play in the next turn
@@ -406,7 +454,7 @@ public class GameController {
         if (!jugadores.get(turnoActual).getName().equals("Humano")) {
             jugarTurnoMaquina();
         }
-
+        verificarEstadoDelJuego();
         actualizarVista();
     }
 
@@ -424,6 +472,7 @@ public class GameController {
 
         // Si no puede jugar ninguna carta, queda eliminada
         maquina.eliminar();
+        maquina.clearLayout();
         avanzarTurno();
     }
 
@@ -432,11 +481,11 @@ public class GameController {
      * @param mensaje Message to be displayed
      */
     private void mostrarMensajeFin(String mensaje) {
-        gameState.setText(mensaje);
-        for (int i = 0; i < jugadores.size(); i++) {
-            Player jugador = jugadores.get(i);
-            jugador.clearLayout();
-        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("¡Juego terminado!");
+        alert.setHeaderText("GAME OVER");
+        alert.setContentText("PERDISTE  ");
+        alert.showAndWait();
     }
 
     /**
