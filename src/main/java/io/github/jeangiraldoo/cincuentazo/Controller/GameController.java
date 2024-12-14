@@ -322,6 +322,8 @@ public class GameController {
 
             mesa.agregarCarta(jugadorActual.jugarCarta(carta));
             System.out.println("Mesa updated: " + mesa.getSumaMesa());
+            actualizarCartasJugador(jugadorActual);
+            actualizarEstado();
 
 
 
