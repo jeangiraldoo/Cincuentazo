@@ -7,6 +7,10 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a player in the game.
+ */
+
 public class Player {
     private String name;
     private VBox container;
@@ -14,6 +18,11 @@ public class Player {
     private List<Card> deck;
     private boolean eliminate;
 
+    /**
+     * Constructs a player with the specified name.
+     *
+     * @param nombre The player's name.
+     */
     public Player(String nombre) {
         this.name = nombre;
         this.deck = new ArrayList<>();
@@ -112,6 +121,10 @@ public class Player {
     public void clearLayout(){
         layout.getChildren().clear();
     }
+
+    /**
+     * Clears all child nodes from the container.
+     */
 
     public void clearContainer(){
         container.getChildren().clear();

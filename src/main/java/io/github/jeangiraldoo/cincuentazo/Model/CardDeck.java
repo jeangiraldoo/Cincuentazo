@@ -3,10 +3,14 @@ package io.github.jeangiraldoo.cincuentazo.Model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+/**
+ * Represents a deck of cards.
+ */
 public class CardDeck {
     private List<Card> cards;
-
+    /**
+     * Constructs a deck and initializes it with all possible cards.
+     */
     public CardDeck() {
         this.cards = new ArrayList<>();
         DeckInit();
@@ -51,6 +55,12 @@ public class CardDeck {
     public boolean isEmpty() {
         return cards.isEmpty();
     }
+
+    /**
+     * Returns the list of cards in the deck.
+     *
+     * @return The deck's cards.
+     */
 
     public List<Card> getCards() {
         return cards;

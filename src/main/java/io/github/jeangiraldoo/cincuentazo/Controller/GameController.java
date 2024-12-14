@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+/** * Controller class for managing the game logic and UI updates of "El Cincuentazo". */
 public class GameController {
     @FXML
     private Pane board;
@@ -39,6 +39,7 @@ public class GameController {
     private List<Player> jugadores;
     private int turnoActual;
 
+    /** * Initializes the game board and starts the game. */
     public void initialize() {
         iniciarJuego();
     }
@@ -47,19 +48,19 @@ public class GameController {
      * Sets up the game's board with its initial state and starts the game
      */
     private void iniciarJuego() {
-        VBox humanVBox = createVisualPlayerContainer("Player", 241.0, 378.0);
+        VBox humanVBox = createVisualPlayerContainer("Humano", 241.0, 378.0);
         HBox humanHbox = createDeckContainer("humanHbox", 241.0, 378.0, 100.0, 200.0);
         humanVBox.getChildren().add(humanHbox);
 
-        VBox machineOneVBox = createVisualPlayerContainer("Machine 1", 241.0, 46.0);
+        VBox machineOneVBox = createVisualPlayerContainer("Máquina 1", 241.0, 46.0);
         HBox machineOne = createDeckContainer("machineOne", 241.0, 46.0, 100.0, 200.0);
         machineOneVBox.getChildren().add(machineOne);
 
-        VBox machineThreeVBox = createVisualPlayerContainer("Machine 3", 14.0, 214.0);
+        VBox machineThreeVBox = createVisualPlayerContainer("Máquina 3", 14.0, 214.0);
         HBox machineThree = createDeckContainer("machineThree", 14.0, 214.0, 100.0, 200.0);
         machineThreeVBox.getChildren().add(machineThree);
 
-        VBox machineTwoVBox = createVisualPlayerContainer("Machine 2", 465.0, 214.0);
+        VBox machineTwoVBox = createVisualPlayerContainer("Máquina 2", 465.0, 214.0);
         HBox machineTwo = createDeckContainer("machineTwo", 465.0, 214.0, 100.0, 202.0);
         machineTwoVBox.getChildren().add(machineTwo);
 
@@ -134,6 +135,10 @@ public class GameController {
         actualizarEstado();
         actualizarVista();
     }
+    /** * Returns an ImageView representing a clickable deck for either used or remaining cards.
+     * * Clicking the deck performs the appropriate action. * * @param title the title of the deck
+     * * @param message the message describing the deck * @param grid the grid pane to display the cards
+     * * @return the ImageView representing the clickable deck */
 
     private ImageView getClickableDeck(String title, String message, GridPane grid) {
         grid.setHgap(10);
@@ -160,6 +165,8 @@ public class GameController {
 
         return reverseCardImageView;
     }
+
+    /** * Allows the human player to take a card from the remaining deck. */
 
     private void tomarCartaDelMazo() {
         // Obtener el jugador humano (primer jugador)
@@ -194,7 +201,11 @@ public class GameController {
         // Actualizar el mazo restante en la interfaz
         updateRemainingMazo();
     }
-
+    /** * Creates a visual container for a player with the specified name and position.
+     * * * @param name the name of the player
+     * * @param posX the x position of the container
+     * * @param posY the y position of the container
+     * * @return the VBox container for the player */
 
     private VBox createVisualPlayerContainer(String name, double posX, double posY){
         VBox playerContainer = new VBox();
@@ -210,6 +221,11 @@ public class GameController {
 
         return playerContainer;
     }
+    /** * Creates a visual container (HBox) for a player's deck with the specified parameters. *
+     * * @param id the identifier for the container * @param posX the x position of the container * @param posY the y position of the container *
+     * @param height the height of the container * @param width the width of the container *
+     *  @return the HBox container for the player's deck */
+
     private HBox createDeckContainer(String id, double posX, double posY, double height, double width){
         HBox playerDeckContainer = new HBox();
         playerDeckContainer.setAlignment(Pos.CENTER);
@@ -251,6 +267,9 @@ public class GameController {
         }
     }
 
+    /** * Updates the visual representation of the remaining deck on the game board.
+     * * Clears the existing grid and repopulates it with images of the remaining cards. */
+
     private void updateRemainingMazo(){
         remainingMazoGrid.getChildren().clear();
         int numColumns = 10;
@@ -266,6 +285,10 @@ public class GameController {
             remainingMazoGrid.add(imageView, col, row);
         }
     }
+
+    /** * Updates the visual representation of a player's deck on the game board.
+     * * Clears the player's current deck layout and repopulates it with images of the player's cards.
+     * * @param jugador the player whose deck is being updated */
 
     private void actualizarCartasJugador(Player jugador) {
 //        for (int i = 0; i < jugadores.size(); i++) {
@@ -306,6 +329,9 @@ public class GameController {
         System.out.println("turno actual: " + jugadorActual.getName());
         gameState.setText("Turno: " + jugadorActual.getName() + " | Suma Mesa: " + mesa.getSumaMesa());
     }
+
+    /** * Handles the action of playing a card during a player's turn. *
+     *  * @param carta the card being played */
 
     private void jugarCarta(Card carta) {
         Player jugadorActual = jugadores.get(turnoActual);
@@ -396,7 +422,8 @@ public class GameController {
     }
 
     /**
-     * Verifica si solo queda un jugador en el juego y finaliza si es así.
+
+     * Check  if there is only one player left in the game and ends it if that is the case
      */
     private void verificarEstadoDelJuego() {
         List<Player> jugadoresActivos = new ArrayList<>();
@@ -416,7 +443,7 @@ public class GameController {
 
 
     /**
-     * Finaliza el juego y detiene cualquier acción pendiente.
+     * Ends the game and stop any pendent action
      */
     private void finalizarJuego() {
         Platform.exit(); // Cierra la aplicación
@@ -426,9 +453,9 @@ public class GameController {
 
 
     /**
-     * Muestra un mensaje con el ganador del juego.
+     * Shows a message with the game winner
      *
-     * @param ganador El jugador que ganó.
+     * @param ganador the player who won the game.
      */
     private void mostrarMensajeGanador(Player ganador) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
