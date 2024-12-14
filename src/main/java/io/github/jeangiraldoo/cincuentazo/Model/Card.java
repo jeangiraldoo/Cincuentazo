@@ -1,9 +1,20 @@
 package io.github.jeangiraldoo.cincuentazo.Model;
 
+/**
+ * Represents a card with a rank, suit, and value.
+ */
+
 public class Card {
-    private final String rank; // Ej. "2", "A", "J"
-    private final String suit; // Ej. "H", "D", "C", "S"
+    private final String rank; // Ej "2", "A", "J"
+    private final String suit; // Ej "H", "D", "C", "S"
     private final int value;
+
+    /**
+     * Constructs a card with the given rank and suit.
+     *
+     * @param rank The rank of the card (e.g., "2", "A", "J").
+     * @param suit The suit of the card (e.g., "H", "D", "C", "S").
+     */
 
     public Card(String rank, String suit) {
         this.rank = rank;
