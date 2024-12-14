@@ -326,9 +326,8 @@ public class GameController {
 
             mesa.agregarCarta(jugadorActual.jugarCarta(carta));
             System.out.println("Mesa updated: " + mesa.getSumaMesa());
+            actualizarCartasJugador(jugadorActual);
             actualizarEstado();
-
-
 
             // Verificar si queda un único jugador
             if (jugadores.stream().filter(j -> !j.isEliminate()).count() == 1) {
@@ -355,8 +354,8 @@ public class GameController {
                             }
                         }
                         actualizarCartasJugador(jugadorActual);
-                        avanzarTurno();
                         actualizarEstado();
+                        avanzarTurno();
                     });
                 }).start();
             } else {
@@ -383,8 +382,8 @@ public class GameController {
                 Platform.runLater(() -> {
                     actualizarCartasJugador(jugadorActual);
                     usedMazoImageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(carta.getImagePath()))));
-                    avanzarTurno();
                     actualizarEstado();
+                    avanzarTurno();
                 });
             }).start();
         } else {
@@ -454,6 +453,7 @@ public class GameController {
         if (!jugadores.get(turnoActual).getName().equals("Humano")) {
             jugarTurnoMaquina();
         }
+        actualizarEstado();
         verificarEstadoDelJuego();
         actualizarVista();
     }
@@ -465,6 +465,7 @@ public class GameController {
         Player maquina = jugadores.get(turnoActual);
         for (Card carta : maquina.getDeck()) {
             if (mesa.getSumaMesa() + carta.getValue() <= 50) {
+                actualizarEstado();
                 jugarCarta(carta);
                 return;
             }
