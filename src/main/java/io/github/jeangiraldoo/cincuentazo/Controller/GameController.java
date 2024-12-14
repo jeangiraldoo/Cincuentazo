@@ -473,7 +473,7 @@ public class GameController {
 
         // Si no puede jugar ninguna carta, queda eliminada
         maquina.eliminar();
-        maquina.clearLayout();
+        maquina.clearContainer();
         avanzarTurno();
     }
 

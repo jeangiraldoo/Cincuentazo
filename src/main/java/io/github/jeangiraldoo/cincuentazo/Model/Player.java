@@ -113,6 +113,10 @@ public class Player {
         layout.getChildren().clear();
     }
 
+    public void clearContainer(){
+        container.getChildren().clear();
+    }
+
     /**
      * Inserts an image into the layout
      * @param image The image to be displayed in the layout
